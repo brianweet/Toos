@@ -19,11 +19,12 @@ public class Census implements ICensus {
 	public boolean voting(ArrayList<IVoter> voters) {
 		boolean result = false;
 		ArrayList<IVoter> handledVoters = new ArrayList<IVoter>();
-		
-		//no voter can vote more than once.  
-		//TODO BwE:Are we going to check if all voters only appear once in the list??
+		  
 		for(int i = 0; i < voters.size(); i++){
 			IVoter voter = voters.get(i);
+			
+			//every valid (i.e. non-null) voter must vote
+			//no voter can vote more than once.
 			if(voter == null || handledVoters.contains(voter))
 				continue;
 			
