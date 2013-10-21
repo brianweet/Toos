@@ -25,8 +25,7 @@ public class Census implements ICensus {
 			
 			//every valid (i.e. non-null) voter must vote
 			//no voter can vote more than once.
-			if(voter == null || handledVoters.contains(voter))
-				continue;
+			if(voter == null || handledVoters.contains(voter))				continue;
 			
 			boolean vote = voter.Vote();
 			
