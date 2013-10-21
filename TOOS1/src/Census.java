@@ -20,8 +20,8 @@ public class Census implements ICensus {
 		boolean result = false;
 		ArrayList<IVoter> handledVoters = new ArrayList<IVoter>();
 		  
-		for(int i = 0; i < voters.size(); i++){
-			IVoter voter = voters.get(i);
+		for (IVoter voter : voters) {	
+
 			
 			//every valid (i.e. non-null) voter must vote
 			//no voter can vote more than once.
