@@ -46,7 +46,31 @@ public class CensusTest {
 		voters.add(voter1true);
 		
 		ICensus census = new Census();
-		assertEquals("One false voter should be false",false,census.voting(voters));
+		assertEquals("One true voter should be true",true,census.voting(voters));
 	  }
+	
+	@Test
+	  public void SecondPredicate_CaseTwo_DoubleTrueVoter() {
+		ArrayList<IVoter> voters = new ArrayList<IVoter>();
+		
+		voters.add(voter1true);       
+		voters.add(voter1true);
+		
+		ICensus census = new Census();
+		assertEquals("Double true voter should be true",true,census.voting(voters));
+	  }
+	
+	@Test
+	  public void SecondPredicate_CaseThree_TrueVoterAndFalseVoter() {
+		ArrayList<IVoter> voters = new ArrayList<IVoter>();
+		
+		voters.add(voter1true);       
+		voters.add(voter2false);
+		
+		ICensus census = new Census();
+		assertEquals("At least one false voter should be false",false,census.voting(voters));
+	  }
+	
+	
 
 }
