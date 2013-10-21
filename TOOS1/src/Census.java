@@ -18,11 +18,13 @@ public class Census implements ICensus {
 	@Override
 	public boolean voting(ArrayList<IVoter> voters) {
 		boolean result = false;
+		ArrayList<IVoter> handledVoters = new ArrayList<IVoter>();
 		
 		//no voter can vote more than once.  
 		//TODO BwE:Are we going to check if all voters only appear once in the list??
-		for (IVoter voter : voters) {
-			if(voter == null)
+		for(int i = 0; i < voters.size(); i++){
+			IVoter voter = voters.get(i);
+			if(voter == null || handledVoters.contains(voter))
 				continue;
 			
 			boolean vote = voter.Vote();
@@ -30,6 +32,9 @@ public class Census implements ICensus {
 			//the returned value must be false only if at least one voter votes false
 			if(!vote)
 				return vote;
+			
+			//track voters who already voted
+			handledVoters.add(voter);
 			
 			//if all voters vote true then the return value must be true
 			result = true;
