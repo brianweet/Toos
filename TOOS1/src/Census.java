@@ -22,8 +22,8 @@ public class Census implements ICensus {
 		
 		//no voter can vote more than once.  
 		//TODO BwE:Are we going to check if all voters only appear once in the list??
-		for(int i = 0; i < voters.size(); i++){
-			IVoter voter = voters.get(i);
+		for (IVoter voter : voters) {	
+
 			if(voter == null || handledVoters.contains(voter))
 				continue;
 			

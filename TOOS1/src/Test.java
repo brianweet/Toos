@@ -14,9 +14,9 @@ public class Test {
 		
 		IVoter nullvoter = null;
 		IVoter voter1 = new Voter(true);
-		IVoter voter2 = new Voter(true);
+		IVoter voter2 = new Voter(false);
 		
-		voters.add(null);		
+		voters.add(nullvoter);		
 		voters.add(voter1);
 		voters.add(voter1);
 		voters.add(voter2);
