@@ -1,12 +1,9 @@
 import java.util.ArrayList;
-
 import Interfaces.ICensus;
 import Interfaces.IVoter;
 
 
 public class Census implements ICensus {
-
-	
 	
 	/* 
 	  	1. the returned value must be false only if at least one voter votes false
@@ -30,7 +27,7 @@ public class Census implements ICensus {
 			
 			//the returned value must be false only if at least one voter votes false
 			if(!vote)
-				return vote;
+				return false;
 			
 			//track voters who already voted
 			handledVoters.add(voter);
