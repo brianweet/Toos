@@ -1,7 +1,8 @@
+package ass1;
 import java.util.ArrayList;
 
-import Interfaces.ICensus;
-import Interfaces.IVoter;
+import Models.Census;
+import Models.Voter;
 
 public class Test {
 
@@ -10,18 +11,18 @@ public class Test {
 	 */
 	@SuppressWarnings("unused")
 	public static void main(String[] args) {
-		ArrayList<IVoter> voters = new ArrayList<IVoter>();
+		ArrayList<Voter> voters = new ArrayList<Voter>();
 		
-		IVoter nullvoter = null;
-		IVoter voter1 = new Voter(true);
-		IVoter voter2 = new Voter(false);
+		Voter nullvoter = null;
+		Voter voter1 = new Voter(true);
+		Voter voter2 = new Voter(false);
 		
 		voters.add(nullvoter);		
 		voters.add(voter1);
 		voters.add(voter1);
 		voters.add(voter2);
 		
-		ICensus census = new Census();
+		Census census = new Census();
 		
 		boolean result = census.voting(voters);
 	}

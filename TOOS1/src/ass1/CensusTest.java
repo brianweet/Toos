@@ -1,20 +1,21 @@
+package ass1;
 import static org.junit.Assert.*;
 
 import java.util.ArrayList;
 
+
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-
-import Interfaces.ICensus;
-import Interfaces.IVoter;
+import Models.Census;
+import Models.Voter;
 
 
 public class CensusTest {
 	
-	private static IVoter voter1true;
-	private static IVoter voter2false;
-	private static ArrayList<IVoter> voters;
+	private static Voter voter1true;
+	private static Voter voter2false;
+	private static ArrayList<Voter> voters;
 
 	@BeforeClass
 	  public static void testSetup() {
@@ -24,14 +25,14 @@ public class CensusTest {
 	
 	@Before
 	public void emptyList(){
-		voters = new ArrayList<IVoter>();
+		voters = new ArrayList<Voter>();
 	}
 
 	@Test
 	  public void FirstPredicate_CaseOne_OneTrueVoter() {
 		voters.add(voter1true);
 		
-		ICensus census = new Census();
+		Census census = new Census();
 		assertEquals("One true voter should be true",true,census.voting(voters));
 	  }
 	
@@ -39,7 +40,7 @@ public class CensusTest {
 	  public void FirstPredicate_CaseTwo_OneFalseVoter() {;
 		voters.add(voter2false);
 		
-		ICensus census = new Census();
+		Census census = new Census();
 		assertEquals("One false voter should be false",false,census.voting(voters));
 	  }
 	
@@ -48,7 +49,7 @@ public class CensusTest {
 		voters.add(null);       
 		voters.add(voter1true);
 		
-		ICensus census = new Census();
+		Census census = new Census();
 		assertEquals("One true voter should be true",true,census.voting(voters));
 	  }
 	
@@ -57,7 +58,7 @@ public class CensusTest {
 		voters.add(voter1true);       
 		voters.add(voter1true);
 		
-		ICensus census = new Census();
+		Census census = new Census();
 		assertEquals("Double true voter should be true",true,census.voting(voters));
 	  }
 	
@@ -66,7 +67,7 @@ public class CensusTest {
 		voters.add(voter1true);       
 		voters.add(voter2false);
 		
-		ICensus census = new Census();
+		Census census = new Census();
 		assertEquals("At least one false voter should be false",false,census.voting(voters));
 	  }
 	

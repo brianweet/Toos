@@ -1,9 +1,7 @@
+package Models;
 import java.util.ArrayList;
-import Interfaces.ICensus;
-import Interfaces.IVoter;
 
-
-public class Census implements ICensus {
+public class Census  {
 	
 	/* 
 	  	1. the returned value must be false only if at least one voter votes false
@@ -12,18 +10,17 @@ public class Census implements ICensus {
 		4. no voter can vote more than once.
 	 * */
 	
-	@Override
-	public boolean voting(ArrayList<IVoter> voters) {
+	public boolean voting(ArrayList<Voter> voters) {
 		boolean result = false;
-		ArrayList<IVoter> handledVoters = new ArrayList<IVoter>();
+		ArrayList<Voter> handledVoters = new ArrayList<Voter>();
 		  
-		for (IVoter voter : voters) {				
+		for (Voter voter : voters) {				
 			//every valid (i.e. non-null) voter must vote
 			//no voter can vote more than once.
 			if(voter == null || handledVoters.contains(voter))				
 				continue;
 			
-			boolean vote = voter.Vote();
+			boolean vote = voter.vote();
 			
 			//the returned value must be false only if at least one voter votes false
 			if(!vote)

@@ -1,7 +1,7 @@
-import Interfaces.IVoter;
+package Models;
 
 
-public class Voter implements IVoter {
+public class Voter {
 	
 	private boolean _vote;
 	public Voter(boolean vote)
@@ -9,8 +9,8 @@ public class Voter implements IVoter {
 		_vote = vote;
 	}
 
-	@Override
-	public boolean Vote() {
+	
+	public boolean vote() {
 		return _vote;
 	}
 
