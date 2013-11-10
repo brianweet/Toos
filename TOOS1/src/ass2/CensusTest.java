@@ -30,9 +30,7 @@ public class CensusTest {
 
 	private static ArrayList<Voter> voters;
 	private static ArrayList<Voter> votersToCheck;
-	private static Census census;
-	private static TrueCensus truecensus;
-	private static FalseCensus falsecensus;
+	private static ArrayList<Census> censuslist;
 	
 	@Before
 	public void setUp() throws Exception {
@@ -43,9 +41,11 @@ public class CensusTest {
 	public void emptyList(){
 		voters = new ArrayList<Voter>();
 		votersToCheck = new ArrayList<Voter>();
-		census  = new Census();
-		truecensus = new TrueCensus();
-		falsecensus = new FalseCensus();
+		censuslist = new ArrayList<Census>();
+		
+		censuslist.add( new Census());
+		censuslist.add( new TrueCensus());
+		censuslist.add( new FalseCensus());
 	}
 	
 	//3. every valid (i.e. non-null) voter must vote
@@ -54,62 +54,34 @@ public class CensusTest {
 	public void endTest(){
 		for(Voter v : votersToCheck){
 	    	if(v != null)
-	    		verify(v, times(1)).vote();
+	    		verify(v, times(censuslist.size())).vote();
 	    }
 	}
 	
 	@Test
 	public void emptyList_should_return_true()  {
-		boolean result = census.voting(voters);
-		boolean trueresult = truecensus.voting(voters);
-		boolean falseresult = falsecensus.voting(voters);
-		
-		// test the result
-	    assertTrue(result);
-	    assertTrue(trueresult);
-	    assertTrue(falseresult);
+		assertCensusLists(true);
 	}
 	
 	@Test
 	public void list_with_one_true_vote_should_return_true()  {
 		addVoterToList(true);
 		
-		boolean result = census.voting(voters);
-		boolean trueresult = truecensus.voting(voters);
-		boolean falseresult = falsecensus.voting(voters);
-		
-		// test the result
-	    assertTrue(result);
-	    assertTrue(trueresult);
-	    assertTrue(falseresult);
+		assertCensusLists(true);
 	}
 	
 	@Test
 	public void list_with_one_false_vote_should_return_false()  {
 		addVoterToList(false);
 		
-		boolean result = census.voting(voters);
-		boolean trueresult = truecensus.voting(voters);
-		boolean falseresult = falsecensus.voting(voters);
-		
-		// test the result
-	    assertFalse(result);
-	    assertFalse(trueresult);
-	    assertFalse(falseresult);
+		assertCensusLists(false);
 	}
 	
 	@Test
 	public void list_with_a_null_voter_should_return_true()  {
 		voters.add(null);
 		
-		boolean result = census.voting(voters);
-		boolean trueresult = truecensus.voting(voters);
-		boolean falseresult = falsecensus.voting(voters);
-		
-		// test the result
-	    assertTrue(result);
-	    assertTrue(trueresult);
-	    assertTrue(falseresult);
+		assertCensusLists(true);
 	}
 	
 	@Test
@@ -117,14 +89,7 @@ public class CensusTest {
 		addVoterToList(false);		
 		addVoterToList(true);
 		
-		boolean result = census.voting(voters);
-		boolean trueresult = truecensus.voting(voters);
-		boolean falseresult = falsecensus.voting(voters);
-		
-		// test the result
-	    assertFalse(result);
-	    assertFalse(trueresult);
-	    assertFalse(falseresult);
+		assertCensusLists(false);
 	}
 	
 	@Test
@@ -132,14 +97,7 @@ public class CensusTest {
 		addVoterToList(true);
 		addVoterToList(false);
 		
-		boolean result = census.voting(voters);
-		boolean trueresult = truecensus.voting(voters);
-		boolean falseresult = falsecensus.voting(voters);
-		
-		// test the result
-	    assertFalse(result);
-	    assertFalse(trueresult);
-	    assertFalse(falseresult);
+		assertCensusLists(false);
 	}
 	
 	@Test
@@ -147,14 +105,7 @@ public class CensusTest {
 		Voter voter = addVoterToList(true);		
 		voters.add(voter);
 		
-		boolean result = census.voting(voters);
-		boolean trueresult = truecensus.voting(voters);
-		boolean falseresult = falsecensus.voting(voters);
-		
-		// test the result
-	    assertTrue(result);
-	    assertTrue(trueresult);
-	    assertTrue(falseresult);
+		assertCensusLists(true);
 	}
 	
 	@Test
@@ -162,14 +113,7 @@ public class CensusTest {
 		Voter voter = addVoterToList(false);		
 		voters.add(voter);
 		
-		boolean result = census.voting(voters);
-		boolean trueresult = truecensus.voting(voters);
-		boolean falseresult = falsecensus.voting(voters);
-		
-		// test the result
-	    assertFalse(result);
-	    assertFalse(trueresult);
-	    assertFalse(falseresult);
+		assertCensusLists(false);
 	}
 	
 	@Test
@@ -182,13 +126,7 @@ public class CensusTest {
 			voters.add(null);
 		}
 		
-		boolean result = census.voting(voters);
-		boolean trueresult = truecensus.voting(voters);
-		boolean falseresult = falsecensus.voting(voters);
-		
-		assertTrue(result);
-	    assertTrue(trueresult);
-	    assertTrue(falseresult);
+		assertCensusLists(true);
 	}
 	
 	@Test
@@ -201,13 +139,7 @@ public class CensusTest {
 			addVoterToList(false);
 		}
 		
-		boolean result = census.voting(voters);
-		boolean trueresult = truecensus.voting(voters);
-		boolean falseresult = falsecensus.voting(voters);
-		
-		assertFalse(result);
-	    assertFalse(trueresult);
-	    assertFalse(falseresult);
+		assertCensusLists(false);
 	}
 	
 	@Test
@@ -220,14 +152,19 @@ public class CensusTest {
 			addVoterToList(true);
 		}
 		
-		boolean result = census.voting(voters);
-		boolean trueresult = truecensus.voting(voters);
-		boolean falseresult = falsecensus.voting(voters);
-		
-		assertTrue(result);
-	    assertTrue(trueresult);
-	    assertTrue(falseresult);
-	}		
+		assertCensusLists(true);
+	}
+	
+	private void assertCensusLists(boolean assertval) {
+		for (Census census : censuslist) {
+			// test the voting result
+			if (assertval) {
+				assertTrue(census.voting(voters));
+			} else {
+				assertFalse(census.voting(voters));
+			}	
+		}
+	}
 
 	//create voter with a specific return value for vote
 	private Voter addVoterToList(boolean vote) {
