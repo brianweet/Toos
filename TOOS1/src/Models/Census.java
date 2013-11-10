@@ -24,13 +24,13 @@ public class Census  {
 			
 			//the returned value must be false only if at least one voter votes false
 			if(!vote)
-				return false;
+				result = false;
 			
 			//track voters who already voted
 			handledVoters.add(voter);
 			
-			//if all voters vote true then the return value must be true
-			result = true;
+			/*//if all voters vote true then the return value must be true
+			result = true;*/
 		}
 		
 		return result;

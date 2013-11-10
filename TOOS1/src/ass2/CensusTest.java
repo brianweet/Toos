@@ -1,11 +1,19 @@
 package ass2;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
 import java.util.ArrayList;
+
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.MockitoAnnotations;
-import static org.mockito.Mockito.*;
+
 import Models.Census;
 import Models.Voter;
 
@@ -32,6 +40,16 @@ public class CensusTest {
 		census  = new Census();
 	}
 	
+	//3. every valid (i.e. non-null) voter must vote
+	//4. no voter can vote more than once
+	@After
+	public void endTest(){
+		for(Voter v : voters){
+	    	if(v != null)
+	    		verify(v, times(1)).vote();
+	    }
+	}
+	
 	@Test
 	public void emptyList_should_return_true()  {
 		boolean result = census.voting(voters);
@@ -41,11 +59,7 @@ public class CensusTest {
 	
 	@Test
 	public void list_with_one_true_vote_should_return_true()  {
-		//create voter with a specific return value for vote
-		Voter voterMock = mock(Voter.class);
-		when(voterMock.vote()).thenReturn(true);
-		
-		voters.add(voterMock);
+		addVoterToList(true);
 		
 		boolean result = census.voting(voters);
 		// test the result
@@ -54,15 +68,13 @@ public class CensusTest {
 	
 	@Test
 	public void list_with_one_false_vote_should_return_false()  {
-		//create voter with a specific return value for vote
-		Voter voterMock = mock(Voter.class);
-		when(voterMock.vote()).thenReturn(false);
-		
-		voters.add(voterMock);
+		addVoterToList(false);
 		
 		boolean result = census.voting(voters);
 		// test the result
 	    assertFalse(result);
+	    
+	    
 	}
 	
 	@Test
@@ -74,23 +86,23 @@ public class CensusTest {
 	    assertTrue(result);
 	}
 	
-	
-	
-	/*@Test
-	public void test()  {
-		Census c  = new Census();
+	@Test
+	public void list_with_a_voter_should_return_true()  {
+		addVoterToList(false);		
+		addVoterToList(true);
 		
-		//create voter with a specific return value for vote
+		boolean result = census.voting(voters);
+		// test the result
+	    assertFalse(result);
+	}
+
+	//create voter with a specific return value for vote
+	private Voter addVoterToList(boolean vote) {
+		
 		Voter voterMock = mock(Voter.class);
-		when(voterMock.vote()).thenReturn(true);
+		when(voterMock.vote()).thenReturn(vote);
+		voters.add(voterMock);
 		
-		ArrayList<Voter> voterList = new ArrayList<Voter>();
-		voterList.add(voterMock);
-		
-		boolean result = c.voting(voterList);
-
-	    // test the result
-	    assertTrue(result);
-	}*/
-
+		return voterMock;
+	}
 }
