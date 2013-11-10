@@ -125,6 +125,48 @@ public class CensusTest {
 		// test the result
 	    assertFalse(result);
 	}
+	
+	@Test
+	public void list_of_null_voters_should_return_true() {
+		
+		int listlength = 20;
+		
+		// make list of 20 items
+		for(int i =0; i < listlength; i++) {
+			voters.add(null);
+		}
+		
+		boolean result = census.voting(voters);
+		assertTrue(result);
+	}
+	
+	@Test
+	public void list_of_false_voters_should_return_false() {
+		
+		int listlength = 20;
+		
+		// make list of 20 items
+		for(int i =0; i < listlength; i++) {
+			addVoterToList(false);
+		}
+		
+		boolean result = census.voting(voters);
+		assertFalse(result);
+	}
+	
+	@Test
+	public void list_of_true_voters_should_return_true() {
+		
+		int listlength = 20;
+		
+		// make list of 20 items
+		for(int i =0; i < listlength; i++) {
+			addVoterToList(true);
+		}
+		
+		boolean result = census.voting(voters);
+		assertTrue(result);	
+	}		
 
 	//create voter with a specific return value for vote
 	private Voter addVoterToList(boolean vote) {
