@@ -1,7 +1,7 @@
 package Models;
 import java.util.ArrayList;
 
-public class Census  {
+public class CensusV1  {
 	
 	/* 
 	  	1. the returned value must be false only if at least one voter votes false
@@ -11,7 +11,7 @@ public class Census  {
 	 * */
 	
 	public boolean voting(ArrayList<Voter> voters) {
-		boolean result = true;
+		boolean result = false;
 		ArrayList<Voter> handledVoters = new ArrayList<Voter>();
 		  
 		for (Voter voter : voters) {				
