@@ -10,7 +10,10 @@ public class Census  {
 		4. no voter can vote more than once.
 	 * */
 	
-	public boolean voting(ArrayList<Voter> voters) {
+	ArrayList<Voter> voters;
+	
+	public boolean voting(ArrayList<Voter> voterslist) {
+		voters = voterslist;
 		boolean result = true;
 		ArrayList<Voter> handledVoters = new ArrayList<Voter>();
 		  
