@@ -27,6 +27,7 @@ import Models.Voter;
 public class CensusTest {
 
 	private static ArrayList<Voter> voters;
+	private static ArrayList<Voter> votersToCheck;
 	private static Census census;
 	
 	@Before
@@ -37,6 +38,7 @@ public class CensusTest {
 	@Before
 	public void emptyList(){
 		voters = new ArrayList<Voter>();
+		votersToCheck = new ArrayList<Voter>();
 		census  = new Census();
 	}
 	
@@ -44,7 +46,7 @@ public class CensusTest {
 	//4. no voter can vote more than once
 	@After
 	public void endTest(){
-		for(Voter v : voters){
+		for(Voter v : votersToCheck){
 	    	if(v != null)
 	    		verify(v, times(1)).vote();
 	    }
@@ -73,8 +75,6 @@ public class CensusTest {
 		boolean result = census.voting(voters);
 		// test the result
 	    assertFalse(result);
-	    
-	    
 	}
 	
 	@Test
@@ -87,9 +87,39 @@ public class CensusTest {
 	}
 	
 	@Test
-	public void list_with_a_voter_should_return_true()  {
+	public void false_true_voters_should_return_false()  {
 		addVoterToList(false);		
 		addVoterToList(true);
+		
+		boolean result = census.voting(voters);
+		// test the result
+	    assertFalse(result);
+	}
+	
+	@Test
+	public void true_false_voters_should_return_false()  {
+		addVoterToList(true);
+		addVoterToList(false);
+		
+		boolean result = census.voting(voters);
+		// test the result
+	    assertFalse(result);
+	}
+	
+	@Test
+	public void double_true_voters_should_vote_only_once()  {
+		Voter voter = addVoterToList(true);		
+		voters.add(voter);
+		
+		boolean result = census.voting(voters);
+		// test the result
+	    assertTrue(result);
+	}
+	
+	@Test
+	public void double_false_voters_should_vote_only_once()  {
+		Voter voter = addVoterToList(false);		
+		voters.add(voter);
 		
 		boolean result = census.voting(voters);
 		// test the result
@@ -102,6 +132,9 @@ public class CensusTest {
 		Voter voterMock = mock(Voter.class);
 		when(voterMock.vote()).thenReturn(vote);
 		voters.add(voterMock);
+		
+		//add to 'votersToCheck' list (used to check if voters can vote twice if you add them twice to the voters list)
+		votersToCheck.add(voterMock);
 		
 		return voterMock;
 	}
