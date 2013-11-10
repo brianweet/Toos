@@ -29,7 +29,7 @@ import Models.Voter;
 public class CensusTest {
 
 	private static ArrayList<Voter> voters;
-	private static ArrayList<Voter> votersToCheck;
+	private static ArrayList<ArrayList<Voter>> votersToCheck;
 	private static ArrayList<Census> censuslist;
 	
 	@Before
@@ -40,22 +40,29 @@ public class CensusTest {
 	@Before
 	public void emptyList(){
 		voters = new ArrayList<Voter>();
-		votersToCheck = new ArrayList<Voter>();
+		votersToCheck = new ArrayList<ArrayList<Voter>>();
 		censuslist = new ArrayList<Census>();
 		
 		censuslist.add( new Census());
 		censuslist.add( new TrueCensus());
 		censuslist.add( new FalseCensus());
+		
+		for (ArrayList<Voter> voterlist : votersToCheck) {
+			voterlist = new ArrayList<Voter>();
+		}
 	}
 	
 	//3. every valid (i.e. non-null) voter must vote
 	//4. no voter can vote more than once
 	@After
 	public void endTest(){
-		for(Voter v : votersToCheck){
-	    	if(v != null)
-	    		verify(v, times(censuslist.size())).vote();
-	    }
+		
+		for (ArrayList<Voter> voterlist : votersToCheck) {
+			for(Voter v : voterlist){
+		    	if(v != null)
+		    		verify(v, times(1)).vote();
+		    }
+		}	
 	}
 	
 	@Test
@@ -174,7 +181,9 @@ public class CensusTest {
 		voters.add(voterMock);
 		
 		//add to 'votersToCheck' list (used to check if voters can vote twice if you add them twice to the voters list)
-		votersToCheck.add(voterMock);
+		for (ArrayList<Voter> voterslist : votersToCheck) {
+			voterslist.add(voterMock);
+		}
 		
 		return voterMock;
 	}
