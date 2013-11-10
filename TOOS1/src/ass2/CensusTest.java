@@ -67,8 +67,10 @@ public class CensusTest {
 	
 	@Test
 	public void emptyList_should_return_true()  {
-		assertCensusLists(true);
+	    assertCensusLists(true);
 	}
+	
+	//one voter
 	
 	@Test
 	public void list_with_one_true_vote_should_return_true()  {
@@ -91,8 +93,18 @@ public class CensusTest {
 		assertCensusLists(true);
 	}
 	
+	//two voters
+	
 	@Test
-	public void false_true_voters_should_return_false()  {
+	public void true_true_should_return_true()  {
+		addVoterToList(true);
+		addVoterToList(true);
+		
+		assertCensusLists(true);
+	}
+	
+	@Test
+	public void false_true_should_return_false()  {
 		addVoterToList(false);		
 		addVoterToList(true);
 		
@@ -100,7 +112,7 @@ public class CensusTest {
 	}
 	
 	@Test
-	public void true_false_voters_should_return_false()  {
+	public void true_false_should_return_false()  {
 		addVoterToList(true);
 		addVoterToList(false);
 		
@@ -108,20 +120,53 @@ public class CensusTest {
 	}
 	
 	@Test
-	public void double_true_voters_should_vote_only_once()  {
-		Voter voter = addVoterToList(true);		
-		voters.add(voter);
+	public void false_false_should_return_false()  {
+		addVoterToList(false);
+		addVoterToList(false);
+		
+		assertCensusLists(false);
+	}
+	
+	@Test
+	public void true_null_should_return_true()  {
+		addVoterToList(true);
+		voters.add(null);
 		
 		assertCensusLists(true);
 	}
 	
 	@Test
-	public void double_false_voters_should_vote_only_once()  {
-		Voter voter = addVoterToList(false);		
-		voters.add(voter);
+	public void null_true_should_return_true()  {
+		voters.add(null);
+		addVoterToList(true);
+		
+		assertCensusLists(true);
+	}
+	
+	@Test
+	public void false_null_should_return_false()  {
+		addVoterToList(false);
+		voters.add(null);
 		
 		assertCensusLists(false);
 	}
+	
+	@Test
+	public void null_false_should_return_false()  {
+		voters.add(null);
+		addVoterToList(false);
+		
+		assertCensusLists(false);
+	}
+	
+	@Test
+	public void null_null_should_return_true()  {
+		voters.add(null);
+		voters.add(null);
+		
+	    assertCensusLists(true);
+	}
+	
 	
 	@Test
 	public void list_of_null_voters_should_return_true() {
