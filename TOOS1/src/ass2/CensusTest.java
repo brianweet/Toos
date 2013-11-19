@@ -29,8 +29,8 @@ import Models.Voter;
 public class CensusTest {
 
 	private static ArrayList<Voter> voters;
-	private static ArrayList<ArrayList<Voter>> votersToCheck;
-	private static ArrayList<Census> censuslist;
+	private static ArrayList<Voter> votersToCheck;
+	private static Census census;
 	
 	@Before
 	public void setUp() throws Exception {
@@ -40,16 +40,13 @@ public class CensusTest {
 	@Before
 	public void emptyList(){
 		voters = new ArrayList<Voter>();
-		votersToCheck = new ArrayList<ArrayList<Voter>>();
-		censuslist = new ArrayList<Census>();
+		votersToCheck = new ArrayList<Voter>();
+		census = new TrueCensus();
 		
-		censuslist.add( new Census());
-		censuslist.add( new TrueCensus());
-		censuslist.add( new FalseCensus());
+		//censuslist.add( new Census());
+		//censuslist.add( new TrueCensus());
+		//censuslist.add( new FalseCensus());
 		
-		for (ArrayList<Voter> voterlist : votersToCheck) {
-			voterlist = new ArrayList<Voter>();
-		}
 	}
 	
 	//3. every valid (i.e. non-null) voter must vote
@@ -57,17 +54,15 @@ public class CensusTest {
 	@After
 	public void endTest(){
 		
-		for (ArrayList<Voter> voterlist : votersToCheck) {
-			for(Voter v : voterlist){
+			for(Voter v : votersToCheck){
 		    	if(v != null)
 		    		verify(v, times(1)).vote();
 		    }
-		}	
 	}
 	
 	@Test
 	public void emptyList_should_return_true()  {
-	    assertCensusLists(true);
+	    assertCensus(true);
 	}
 	
 	//one voter
@@ -76,21 +71,21 @@ public class CensusTest {
 	public void list_with_one_true_vote_should_return_true()  {
 		addVoterToList(true);
 		
-		assertCensusLists(true);
+		assertCensus(true);
 	}
 	
 	@Test
 	public void list_with_one_false_vote_should_return_false()  {
 		addVoterToList(false);
 		
-		assertCensusLists(false);
+		assertCensus(false);
 	}
 	
 	@Test
 	public void list_with_a_null_voter_should_return_true()  {
 		voters.add(null);
 		
-		assertCensusLists(true);
+		assertCensus(true);
 	}
 	
 	//two voters
@@ -100,7 +95,7 @@ public class CensusTest {
 		addVoterToList(true);
 		addVoterToList(true);
 		
-		assertCensusLists(true);
+		assertCensus(true);
 	}
 	
 	@Test
@@ -108,7 +103,7 @@ public class CensusTest {
 		addVoterToList(false);		
 		addVoterToList(true);
 		
-		assertCensusLists(false);
+		assertCensus(false);
 	}
 	
 	@Test
@@ -116,7 +111,7 @@ public class CensusTest {
 		addVoterToList(true);
 		addVoterToList(false);
 		
-		assertCensusLists(false);
+		assertCensus(false);
 	}
 	
 	@Test
@@ -124,7 +119,7 @@ public class CensusTest {
 		addVoterToList(false);
 		addVoterToList(false);
 		
-		assertCensusLists(false);
+		assertCensus(false);
 	}
 	
 	@Test
@@ -132,7 +127,7 @@ public class CensusTest {
 		addVoterToList(true);
 		voters.add(null);
 		
-		assertCensusLists(true);
+		assertCensus(true);
 	}
 	
 	@Test
@@ -140,7 +135,7 @@ public class CensusTest {
 		voters.add(null);
 		addVoterToList(true);
 		
-		assertCensusLists(true);
+		assertCensus(true);
 	}
 	
 	@Test
@@ -148,7 +143,7 @@ public class CensusTest {
 		addVoterToList(false);
 		voters.add(null);
 		
-		assertCensusLists(false);
+		assertCensus(false);
 	}
 	
 	@Test
@@ -156,7 +151,7 @@ public class CensusTest {
 		voters.add(null);
 		addVoterToList(false);
 		
-		assertCensusLists(false);
+		assertCensus(false);
 	}
 	
 	@Test
@@ -164,9 +159,10 @@ public class CensusTest {
 		voters.add(null);
 		voters.add(null);
 		
-	    assertCensusLists(true);
+	    assertCensus(true);
 	}
 	
+	// list
 	
 	@Test
 	public void list_of_null_voters_should_return_true() {
@@ -178,7 +174,7 @@ public class CensusTest {
 			voters.add(null);
 		}
 		
-		assertCensusLists(true);
+		assertCensus(true);
 	}
 	
 	@Test
@@ -191,7 +187,7 @@ public class CensusTest {
 			addVoterToList(false);
 		}
 		
-		assertCensusLists(false);
+		assertCensus(false);
 	}
 	
 	@Test
@@ -204,18 +200,34 @@ public class CensusTest {
 			addVoterToList(true);
 		}
 		
-		assertCensusLists(true);
+		assertCensus(true);
 	}
 	
-	private void assertCensusLists(boolean assertval) {
-		for (Census census : censuslist) {
-			// test the voting result
+    @Test
+    public void double_true_voters_should_vote_only_once()  {
+        Voter voter = addVoterToList(true);       
+        voters.add(voter);
+       
+        // test the result
+        assertCensus(true);
+    }
+   
+    @Test
+    public void double_false_voters_should_vote_only_once()  {
+        Voter voter = addVoterToList(false);       
+        voters.add(voter);
+       
+        // test the result
+        assertCensus(false);
+    }
+	
+	
+	private void assertCensus(boolean assertval) {
 			if (assertval) {
 				assertTrue(census.voting(voters));
 			} else {
 				assertFalse(census.voting(voters));
 			}	
-		}
 	}
 
 	//create voter with a specific return value for vote
@@ -226,10 +238,9 @@ public class CensusTest {
 		voters.add(voterMock);
 		
 		//add to 'votersToCheck' list (used to check if voters can vote twice if you add them twice to the voters list)
-		for (ArrayList<Voter> voterslist : votersToCheck) {
-			voterslist.add(voterMock);
-		}
-		
+
+		votersToCheck.add(voterMock);
+
 		return voterMock;
 	}
 }
