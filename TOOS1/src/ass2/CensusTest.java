@@ -27,7 +27,6 @@ import Models.Voter;
  * */
 
 public class CensusTest {
-
 	private static ArrayList<Voter> voters;
 	private static ArrayList<Voter> votersToCheck;
 	private static Census census;
@@ -41,23 +40,21 @@ public class CensusTest {
 	public void emptyList(){
 		voters = new ArrayList<Voter>();
 		votersToCheck = new ArrayList<Voter>();
-		census = new TrueCensus();
+		census = new Census();
 		
 		//censuslist.add( new Census());
 		//censuslist.add( new TrueCensus());
 		//censuslist.add( new FalseCensus());
-		
 	}
 	
 	//3. every valid (i.e. non-null) voter must vote
 	//4. no voter can vote more than once
 	@After
 	public void endTest(){
-		
-			for(Voter v : votersToCheck){
-		    	if(v != null)
-		    		verify(v, times(1)).vote();
-		    }
+		for(Voter v : votersToCheck){
+	    	if(v != null)
+	    		verify(v, times(1)).vote();
+	    }
 	}
 	
 	@Test
@@ -202,6 +199,8 @@ public class CensusTest {
 		
 		assertCensus(true);
 	}
+	
+	//double
 	
     @Test
     public void double_true_voters_should_vote_only_once()  {
